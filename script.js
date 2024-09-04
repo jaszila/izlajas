@@ -11,27 +11,39 @@ window.onload = function() {
             console.error('Error fetching location data:', error);
         });
 
-    // Countdown timer
-    function startCountdown(duration, display) {
-        let timer = duration, minutes, seconds;
+    // Set countdown duration (12 minutes)
+    const countdownDuration = 12 * 60 * 1000; // 12 minutes in milliseconds
+    const countdownEnd = new Date().getTime() + countdownDuration; // Set end time
 
-        const intervalId = setInterval(function() {
-            minutes = Math.floor(timer / 60);
-            seconds = timer % 60;
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const timeLeft = countdownEnd - now;
 
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
+        if (timeLeft <= 0) {
+            document.querySelector('#hours').textContent = "00";
+            document.querySelector('#minutes').textContent = "00";
+            document.querySelector('#seconds').textContent = "00";
+            return; // Stop updating when countdown reaches zero
+        }
 
-            display.textContent = minutes + ":" + seconds;
+        const hours = Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+        const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+        const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
 
-            if (--timer < 0) {
-                clearInterval(intervalId);
-                timer = 0;
-            }
-        }, 1000);
+        // Format time as double digits
+        document.querySelector('#hours').textContent = hours < 10 ? "0" + hours : hours;
+        document.querySelector('#minutes').textContent = minutes < 10 ? "0" + minutes : minutes;
+        document.querySelector('#seconds').textContent = seconds < 10 ? "0" + seconds : seconds;
     }
 
-    const countdownDuration = 60 * 19; // 19 minutes
-    const display = document.querySelector('#countdown');
-    startCountdown(countdownDuration, display);
+    // Update the countdown every second
+    setInterval(updateCountdown, 1000);
+
+    // Display current date
+    const currentDate = new Date();
+    const dateString = currentDate.toDateString();
+    document.querySelector('#current-date').textContent = dateString;
+
+    // Initial call to populate the countdown immediately
+    updateCountdown();
 };
