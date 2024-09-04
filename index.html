@@ -137,51 +137,14 @@
             margin-top: 5px;
         }
 
-        /* Countdown Timer Styles */
-        .countdown-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px; /* Margin from other sections */
-        }
-
         .countdown-box {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 255, 255, 0.7); /* Transparent white box */
-            border-radius: 20px;
-            padding: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            font-size: 48px; /* Slightly smaller size */
-            color: white; /* White font color */
-            font-weight: bold;
-            margin-top: 20px; /* Space from the button above */
-        }
-
-        .time-unit {
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #fff;
+            font-size: 36px; /* Slightly smaller font size */
+            color: white;
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .separator {
-            font-size: 60px;
-            color: white;
-            margin: 0 10px;
-        }
-
-        .countdown-label {
-            margin-top: 20px;
-            font-size: 24px;
-            color: white;
-            font-weight: bold;
+            display: inline-block; /* Makes the box fit around the text */
+            margin-top: 20px; /* Space above countdown box */
         }
 
         /* Mobile adjustments */
@@ -199,19 +162,13 @@
             .call-to-action {
                 font-size: 14px;
             }
-            .circle-text, .status-text, .additional-text, .unique-geolocation, .countdown-timer, .call-to-action {
+            .circle-text, .status-text, .additional-text, .unique-geolocation, .call-to-action {
                 font-size: 14px;
             }
             .countdown-box {
-                font-size: 36px;
-                padding: 10px;
+                font-size: 24px; /* Smaller font size for mobile */
+                padding: 15px; /* Reduced padding */
             }
-        }
-
-        /* Load and apply the custom font */
-        @font-face {
-            font-family: 'Shrikhand';
-            src: url('fonts/Shrikhand-Regular.ttf') format('truetype');
         }
     </style>
 </head>
@@ -248,16 +205,9 @@
                     </a>
                 </div>
             </div>
-            <!-- Countdown Timer -->
-            <div class="countdown-container">
-                <div class="countdown-box">
-                    <div class="time-unit" id="hours">01</div>
-                    <div class="separator">:</div>
-                    <div class="time-unit" id="minutes">30</div>
-                    <div class="separator">:</div>
-                    <div class="time-unit" id="seconds">00</div>
-                </div>
-                <div class="countdown-label">Time Remaining</div>
+            <!-- Countdown Timer Box -->
+            <div class="countdown-box">
+                <span id="hours">01</span>:<span id="minutes">30</span>:<span id="seconds">00</span>
             </div>
         </div>
     </div>
