@@ -150,18 +150,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #ffebcd; /* Light color for the timer box */
+            background-color: rgba(255, 255, 255, 0.7); /* Transparent white box */
             border-radius: 20px;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            font-size: 60px;
-            color: #ff4500; /* Bright color for the timer text */
+            font-size: 48px; /* Slightly smaller size */
+            color: white; /* White font color */
             font-weight: bold;
+            margin-top: 20px; /* Space from the button above */
         }
 
         .time-unit {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -171,15 +172,15 @@
         }
 
         .separator {
-            font-size: 80px;
-            color: #ff4500;
+            font-size: 60px;
+            color: white;
             margin: 0 10px;
         }
 
         .countdown-label {
             margin-top: 20px;
             font-size: 24px;
-            color: #ff4500;
+            color: white;
             font-weight: bold;
         }
 
@@ -202,7 +203,7 @@
                 font-size: 14px;
             }
             .countdown-box {
-                font-size: 40px;
+                font-size: 36px;
                 padding: 10px;
             }
         }
@@ -231,79 +232,75 @@
             </div>
             <div class="additional-text">Hi, I'm Jasmine and I'm currently visiting here at</div>
         </div>
-        <!-- Countdown Timer and Geolocation Section -->
-        <div class="countdown-container">
-            <div id="countdown" class="countdown-box">
-                <div id="hours" class="time-unit">01</div>
-                <div class="separator">:</div>
-                <div id="minutes" class="time-unit">30</div>
-                <div class="separator">:</div>
-                <div id="seconds" class="time-unit">00</div>
+        <!-- New section for geolocation and countdown -->
+        <div class="unique-info">
+            <div class="unique-geolocation">I'm 4.8Km away from you</div>
+            <div class="call-to-action">
+                Send me a message, I'll be waiting for you💋
+                <div class="cta-detail">Let's talk here👇🏻👇🏻</div>
+                <div class="button-container">
+                    <a href="https://onlyfans.com/jasminebabegirl/c99" class="transparent-button">
+                        <img src="images/OnlyFans-Symbol.png" alt="OnlyFans Symbol" class="button-icon">
+                        Only Friends VIP       
+                    </a>
+                    <a href="https://onlyfans.com/jasminebabegirl/c99" class="transparent-button">
+                        Click here for some hot stuffs :>
+                    </a>
+                </div>
             </div>
-            <div class="countdown-label">Time Remaining</div>
-            <div class="unique-info">
-                <div id="geolocation" class="unique-geolocation">Fetching location...</div>
-            </div>
-        </div>
-        <!-- Call-to-Action Section -->
-        <div class="call-to-action">
-            Send me a message, I'll be waiting for you💋
-            <div class="cta-detail">Let's talk here👇🏻👇🏻</div>
-            <div class="button-container">
-                <a href="https://onlyfans.com/jasminebabegirl/c99" class="transparent-button">
-                    <img src="images/OnlyFans-Symbol.png" alt="OnlyFans Symbol" class="button-icon">
-                    Only Friends VIP       
-                </a>
-                <a href="https://onlyfans.com/jasminebabegirl/c99" class="transparent-button">
-                    Click here for some hot stuffs :>
-                </a>
+            <!-- Countdown Timer -->
+            <div class="countdown-container">
+                <div class="countdown-box">
+                    <div class="time-unit" id="hours">01</div>
+                    <div class="separator">:</div>
+                    <div class="time-unit" id="minutes">30</div>
+                    <div class="separator">:</div>
+                    <div class="time-unit" id="seconds">00</div>
+                </div>
+                <div class="countdown-label">Time Remaining</div>
             </div>
         </div>
     </div>
     <script>
         window.onload = function() {
-            // Countdown Timer Functionality
-            const hoursElement = document.getElementById('hours');
-            const minutesElement = document.getElementById('minutes');
-            const secondsElement = document.getElementById('seconds');
-
-            let totalSeconds = 1 * 3600 + 30 * 60; // 1 hour and 30 minutes in seconds
-
-            function updateTimer() {
-                let hours = Math.floor(totalSeconds / 3600);
-                let minutes = Math.floor((totalSeconds % 3600) / 60);
-                let seconds = totalSeconds % 60;
-
-                hoursElement.textContent = String(hours).padStart(2, '0');
-                minutesElement.textContent = String(minutes).padStart(2, '0');
-                secondsElement.textContent = String(seconds).padStart(2, '0');
-
-                if (totalSeconds <= 0) {
-                    clearInterval(timerInterval);
-                    hoursElement.textContent = '00';
-                    minutesElement.textContent = '00';
-                    secondsElement.textContent = '00';
-                } else {
-                    totalSeconds--;
-                }
-            }
-
-            // Update the timer every second
-            const timerInterval = setInterval(updateTimer, 1000);
-            updateTimer(); // Initial call to display the timer immediately
-
             // Fetch geolocation and update text
             fetch('https://ipapi.co/json/')
                 .then(response => response.json())
                 .then(data => {
                     const location = `${data.city}, ${data.region}, ${data.country_name}`;
-                    document.getElementById('geolocation').textContent = location;
+                    document.querySelector('.unique-geolocation').textContent = location;
                 })
                 .catch(error => {
-                    document.getElementById('geolocation').textContent = "Information is unavailable.";
+                    document.querySelector('.unique-geolocation').textContent = "Information is unavailable.";
                     console.error('Error fetching location data:', error);
                 });
-        };
+
+            // Countdown Timer Logic
+            const countdownElement = document.querySelector('.countdown-box');
+            let endTime = new Date().getTime() + 1 * 60 * 60 * 1000 + 30 * 60 * 1000; // 1 hour 30 minutes from now
+
+            function updateTimer() {
+                let now = new Date().getTime();
+                let distance = endTime - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    countdownElement.innerHTML = "EXPIRED";
+                    return;
+                }
+
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            }
+
+            // Update the timer every 1 second
+            let timerInterval = setInterval(updateTimer, 1000);
+        }
     </script>
 </body>
 </html>
