@@ -153,6 +153,13 @@
             display: inline-block;
         }
 
+        /* Date Styles */
+        .current-date {
+            font-size: 18px;
+            color: white;
+            margin-bottom: 10px; /* Space between date and timer */
+        }
+
         /* Mobile adjustments */
         @media (max-width: 767px) {
             .transparent-button {
@@ -207,7 +214,8 @@
                     </a>
                     <!-- Countdown Timer -->
                     <div class="countdown-container">
-                        <div class="countdown-timer" id="countdown-timer">12:00</div>
+                        <div class="current-date" id="current-date"></div>
+                        <div class="countdown-timer" id="countdown-timer">00:12:00</div>
                     </div>
                 </div>
             </div>
@@ -215,6 +223,7 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Set the countdown duration (12 minutes)
             const countdownDuration = 12 * 60 * 1000; // 12 minutes in milliseconds
             const countdownEnd = new Date().getTime() + countdownDuration; // Set end time
 
@@ -222,16 +231,18 @@
                 const now = new Date().getTime();
                 const timeLeft = countdownEnd - now;
 
-                // Calculate minutes and seconds
+                // Calculate hours, minutes, and seconds
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
                 // Format time with leading zeros
+                const formattedHours = hours.toString().padStart(2, '0');
                 const formattedMinutes = minutes.toString().padStart(2, '0');
                 const formattedSeconds = seconds.toString().padStart(2, '0');
 
                 // Display the timer
-                document.getElementById('countdown-timer').textContent = `${formattedMinutes}:${formattedSeconds}`;
+                document.getElementById('countdown-timer').textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 
                 // If the countdown is over, display a message
                 if (timeLeft < 0) {
@@ -239,12 +250,12 @@
                 }
             }
 
-            // Update the countdown every second
-            setInterval(updateCountdown, 1000);
-            
-            // Initial call to display the timer immediately
-            updateCountdown();
-        });
-    </script>
-</body>
-</html>
+            // Function to display the current date
+            function displayCurrentDate() {
+                const now = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = now.toLocaleDateString(undefined, options);
+                document.getElementById('current-date').textContent = `Today: ${formattedDate}`;
+            }
+
+            //
