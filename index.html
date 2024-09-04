@@ -6,24 +6,53 @@
     <title>Jasmine</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Ensure the parent container centers its content */
-        .text-overlay {
-            position: absolute;
+        /* General styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for the whole website */
+        }
+
+        /* Video background */
+        .video-background {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: white;
+            text-align: center;
+            overflow: visible; /* Allow content overflow */
+            opacity: 1; /* Ensuring full opacity for content */
+        }
+
+        .circle-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1;
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
-        }
-
-        .circle-container {
-            margin: 0; /* Reset any margin */
+            z-index: 2;
+            padding: 20px;
+            border-radius: 10px; /* Optional: Rounded corners */
         }
 
         .circle-image {
@@ -31,8 +60,7 @@
             height: 100px;
             border-radius: 50%;
             overflow: hidden;
-            margin: 0 auto; /* Center horizontally */
-            margin-bottom: 10px; /* Space between image and text */
+            margin-bottom: 10px;
         }
 
         .circle-image img {
@@ -46,33 +74,44 @@
             font-family: 'Shrikhand', sans-serif;
             color: white;
             font-weight: 600;
-            margin: 5px 0; /* Space around text */
+            padding: 10px;
+            border-radius: 5px;
         }
 
         .status-container {
+            margin-top: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px; /* Space between status dot and text */
-            margin: 5px 0; /* Space between text and status */
         }
 
         .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 12px; /* Slightly increased for better visibility */
+            height: 12px;
             border-radius: 50%;
             background-color: limegreen;
+            margin-right: 5px;
+            display: inline-block; /* Ensures the dot is treated like text */
         }
 
         .status-text {
             font-size: 18px;
             color: white;
+            font-family: Arial, sans-serif;
+            display: inline-block;
+            vertical-align: middle; /* Aligns text with the status dot */
         }
 
         .additional-text {
             font-size: 18px;
             color: white;
-            margin-top: 10px; /* Space above additional text */
+            font-family: Arial, sans-serif;
+            margin-top: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 5px;
+            border-radius: 5px; /* Optional: Rounded corners */
         }
 
         .unique-info {
@@ -108,7 +147,7 @@
         .transparent-button {
             display: inline-flex;
             align-items: center;
-            padding: 10px 20px; /* Adjust padding as needed */
+            padding: 10px 90px;
             border: 2px solid white;
             background-color: transparent;
             color: white;
@@ -124,64 +163,74 @@
         }
 
         .button-icon {
-            width: 24px; /* Adjust size as needed */
+            width: 30px; /* Adjusted size for a better fit */
             height: auto;
-            margin-right: 5px; /* Space between icon and text, adjust as needed */
+            margin-right: 10px; /* Space between icon and text */
         }
 
         .button-text {
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .countdown-container {
+            font-size: 20px;
+            margin: 0; /* Remove margin to stick closely */
             display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            margin-top: 20px;
-            font-family: Arial, sans-serif;
-            color: white;
+            align-items: center; /* Align vertically */
         }
 
-        .countdown-box {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.2); /* Transparent white background */
-            border: 2px solid white;
-            border-radius: 5px;
+        .button-container a {
             display: flex;
-            justify-content: center;
             align-items: center;
-            font-size: 24px;
         }
 
-        #date {
-            margin-top: 10px;
-            font-size: 16px;
+        .cta-detail {
+            margin-top: 5px;
         }
 
         /* Mobile adjustments */
         @media (max-width: 767px) {
             .transparent-button {
-                padding: 10px 15px;
+                padding: 10px 20px;
                 font-size: 16px;
             }
             .button-icon {
                 width: 20px;
-                margin-right: 5px; /* Adjust margin for mobile */
             }
-            .countdown-box {
-                width: 30px;
-                height: 30px;
-                font-size: 18px;
+            .button-text {
+                font-size: 16px;
             }
             .call-to-action {
                 font-size: 14px;
             }
         }
 
-        /* Load and apply the custom font */
+        /* Timer styles */
+        .timer-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .timer-box {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.2); /* Transparent white background */
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+
+        /* Date display styles */
+        .date-display {
+            font-size: 16px;
+            color: white;
+            margin-top: 10px;
+        }
+
         @font-face {
             font-family: 'Shrikhand';
             src: url('fonts/Shrikhand-Regular.ttf') format('truetype');
@@ -205,6 +254,7 @@
             </div>
             <div class="additional-text">Hi, I'm Jasmine and I'm currently visiting here at</div>
         </div>
+        <!-- New section for geolocation, countdown, and date -->
         <div class="unique-info">
             <div class="unique-geolocation">I'm 4.8Km away from you</div>
             <div class="call-to-action">
@@ -220,45 +270,35 @@
                     </a>
                 </div>
             </div>
-            <div class="countdown-container">
-                <div class="countdown-box" id="hours">00</div>
-                <div class="countdown-box" id="minutes">00</div>
-                <div class="countdown-box" id="seconds">00</div>
+            <!-- Countdown timer -->
+            <div class="timer-container">
+                <div class="timer-box" id="hours"></div>:
+                <div class="timer-box" id="minutes"></div>:
+                <div class="timer-box" id="seconds"></div>
             </div>
-            <div id="date"></div>
+            <!-- Date display -->
+            <div class="date-display" id="date"></div>
         </div>
     </div>
     <script>
         window.onload = function() {
-            // Fetch geolocation and update text
-            fetch('https://ipapi.co/json/')
-                .then(response => response.json())
-                .then(data => {
-                    const location = `${data.city}, ${data.region}, ${data.country_name}`;
-                    document.querySelector('.unique-geolocation').textContent = location;
-                })
-                .catch(error => {
-                    document.querySelector('.unique-geolocation').textContent = "Information is unavailable.";
-                    console.error('Error fetching location data:', error);
-                });
-
-            // Countdown Timer Logic
-            const endTime = new Date().getTime() + (1 * 60 * 60 * 1000) + (30 * 60 * 1000); // 1 hour 30 minutes
+            // Initialize countdown timer
+            let endTime = new Date(Date.now() + 1 * 60 * 60 * 1000 + 30 * 60 * 1000); // 1 hour 30 minutes from now
 
             function updateTimer() {
-                const now = new Date().getTime();
-                const distance = endTime - now;
+                const now = new Date();
+                const timeRemaining = endTime - now;
 
-                if (distance < 0) {
-                    document.getElementById('hours').textContent = "00";
-                    document.getElementById('minutes').textContent = "00";
-                    document.getElementById('seconds').textContent = "00";
-                    return; // Timer has ended
+                if (timeRemaining <= 0) {
+                    document.getElementById('hours').textContent = '00';
+                    document.getElementById('minutes').textContent = '00';
+                    document.getElementById('seconds').textContent = '00';
+                    return;
                 }
 
-                const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                const hours = Math.floor((timeRemaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+                const minutes = Math.floor((timeRemaining % (60 * 60 * 1000)) / (60 * 1000));
+                const seconds = Math.floor((timeRemaining % (60 * 1000)) / 1000);
 
                 document.getElementById('hours').textContent = String(hours).padStart(2, '0');
                 document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
@@ -266,17 +306,21 @@
             }
 
             setInterval(updateTimer, 1000);
+            updateTimer(); // Initialize immediately
 
-            // Fetch current date and time
-            function updateDate() {
-                const now = new Date();
-                const dateString = now.toDateString() + ' ' + now.toLocaleTimeString();
-                document.getElementById('date').textContent = dateString;
-            }
-
-            updateDate(); // Initial call
-            setInterval(updateDate, 60000); // Update every minute
-        }
+            // Fetch date and update text
+            fetch('https://worldtimeapi.org/api/ip')
+                .then(response => response.json())
+                .then(data => {
+                    const dateTime = new Date(data.datetime);
+                    const dateStr = `${dateTime.toDateString()} ${dateTime.toLocaleTimeString()}`;
+                    document.getElementById('date').textContent = dateStr;
+                })
+                .catch(error => {
+                    document.getElementById('date').textContent = "Date information is unavailable.";
+                    console.error('Error fetching date data:', error);
+                });
+        };
     </script>
 </body>
 </html>
