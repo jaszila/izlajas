@@ -108,7 +108,7 @@
         .transparent-button {
             display: inline-flex;
             align-items: center;
-            padding: 10px 90px;
+            padding: 10px 20px; /* Adjust padding as needed */
             border: 2px solid white;
             background-color: transparent;
             color: white;
@@ -124,74 +124,60 @@
         }
 
         .button-icon {
-            width: 40px;
+            width: 24px; /* Adjust size as needed */
             height: auto;
-            margin-right: 10px; /* Space between icon and text */
+            margin-right: 8px; /* Reduced margin to bring icon closer to text */
         }
 
         .button-text {
-            margin-left: 50px; /* Space for icon */
-        }
-
-        .cta-detail {
-            margin-top: 5px;
-        }
-
-        /* Timer styling */
-        .countdown-container {
             display: flex;
             align-items: center;
+        }
+
+        .countdown-container {
+            display: flex;
             justify-content: center;
-            gap: 5px; /* Space between boxes and colons */
+            align-items: center;
+            gap: 5px;
             margin-top: 20px;
+            font-family: Arial, sans-serif;
+            color: white;
         }
 
         .countdown-box {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.2); /* Transparent white background */
+            border: 2px solid white;
+            border-radius: 5px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2); /* Transparent white background */
-            border-radius: 10px; /* Rounded corners */
-            color: white;
+            align-items: center;
             font-size: 24px;
-            font-weight: bold;
         }
 
-        .countdown-colon {
-            font-size: 24px;
-            color: white;
-        }
-
-        .date-container {
+        #date {
             margin-top: 10px;
             font-size: 16px;
-            color: white;
         }
 
         /* Mobile adjustments */
         @media (max-width: 767px) {
             .transparent-button {
-                padding: 10px 20px;
+                padding: 10px 15px;
                 font-size: 16px;
-            }
-            .button-text {
-                margin-left: 60px;
             }
             .button-icon {
                 width: 20px;
+                margin-right: 5px; /* Adjust margin for mobile */
+            }
+            .countdown-box {
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
             }
             .call-to-action {
                 font-size: 14px;
-            }
-            .circle-text, .status-text, .additional-text, .unique-geolocation, .call-to-action {
-                font-size: 14px;
-            }
-            .countdown-box {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
             }
         }
 
@@ -219,7 +205,7 @@
             </div>
             <div class="additional-text">Hi, I'm Jasmine and I'm currently visiting here at</div>
         </div>
-        <!-- New section for geolocation, countdown, and date -->
+        <!-- Countdown and Date Section -->
         <div class="unique-info">
             <div class="unique-geolocation">I'm 4.8Km away from you</div>
             <div class="call-to-action">
@@ -228,43 +214,43 @@
                 <div class="button-container">
                     <a href="https://onlyfans.com/jasminebabegirl/c99" class="transparent-button">
                         <img src="images/OnlyFans-Symbol.png" alt="OnlyFans Symbol" class="button-icon">
-                        Only Friends VIP       
+                        <span class="button-text">Only Friends VIP</span>
                     </a>
                     <a href="https://onlyfans.com/jasminebabegirl/c99" class="transparent-button">
-                        Click here for some hot stuffs :>
+                        <span class="button-text">Click here for some hot stuffs :></span>
                     </a>
                 </div>
-                <!-- Countdown Timer -->
-                <div class="countdown-container">
-                    <div id="hours" class="countdown-box"></div>
-                    <div class="countdown-colon">:</div>
-                    <div id="minutes" class="countdown-box"></div>
-                    <div class="countdown-colon">:</div>
-                    <div id="seconds" class="countdown-box"></div>
-                </div>
-                <!-- Date -->
-                <div id="date" class="date-container"></div>
             </div>
+            <!-- Countdown Timer -->
+            <div class="countdown-container">
+                <div id="hours" class="countdown-box">00</div>
+                <div class="countdown-box">:</div>
+                <div id="minutes" class="countdown-box">00</div>
+                <div class="countdown-box">:</div>
+                <div id="seconds" class="countdown-box">00</div>
+            </div>
+            <!-- Date Display -->
+            <div id="date"></div>
         </div>
     </div>
     <script>
         window.onload = function() {
-            // Countdown Timer
-            const countDownDate = new Date().getTime() + 1 * 60 * 60 * 1000; // Set to 1 hour from now
+            // Countdown Timer Function
+            const targetTime = new Date().getTime() + (1 * 60 * 60 * 1000) + (30 * 60 * 1000); // 1 hour 30 minutes from now
 
             function updateTimer() {
                 const now = new Date().getTime();
-                const distance = countDownDate - now;
+                const distance = targetTime - now;
 
                 if (distance < 0) {
+                    document.getElementById('hours').textContent = '00';
+                    document.getElementById('minutes').textContent = '00';
+                    document.getElementById('seconds').textContent = '00';
                     clearInterval(timerInterval);
-                    document.getElementById('hours').textContent = "00";
-                    document.getElementById('minutes').textContent = "00";
-                    document.getElementById('seconds').textContent = "00";
                     return;
                 }
 
-                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
                 let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -293,14 +279,21 @@
                 });
 
             // Fetch current date and update text
-            const date = new Date();
-            const formattedDate = date.toLocaleDateString('en-US', {
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric'
-            });
-            document.getElementById('date').textContent = formattedDate;
+            fetch('https://worldtimeapi.org/api/ip')
+                .then(response => response.json())
+                .then(data => {
+                    const currentDate = new Date(data.datetime).toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    document.getElementById('date').textContent = `Date: ${currentDate}`;
+                })
+                .catch(error => {
+                    document.getElementById('date').textContent = "Date information is unavailable.";
+                    console.error('Error fetching date data:', error);
+                });
         }
     </script>
 </body>
