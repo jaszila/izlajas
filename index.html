@@ -140,8 +140,9 @@
         /* Timer styling */
         .countdown-container {
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 10px; /* Space between boxes */
+            gap: 5px; /* Space between boxes and colons */
             margin-top: 20px;
         }
 
@@ -156,6 +157,11 @@
             color: white;
             font-size: 24px;
             font-weight: bold;
+        }
+
+        .countdown-colon {
+            font-size: 24px;
+            color: white;
         }
 
         /* Mobile adjustments */
@@ -225,9 +231,9 @@
                 <!-- Countdown Timer -->
                 <div class="countdown-container">
                     <div id="hours" class="countdown-box"></div>
-                    <div class="countdown-box">:</div>
+                    <div class="countdown-colon">:</div>
                     <div id="minutes" class="countdown-box"></div>
-                    <div class="countdown-box">:</div>
+                    <div class="countdown-colon">:</div>
                     <div id="seconds" class="countdown-box"></div>
                 </div>
             </div>
@@ -259,7 +265,7 @@
                 document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
             }
 
-            updateTimer(); // Initial call to display timer immediately
+            updateTimer(); // Initial call
             const timerInterval = setInterval(updateTimer, 1000);
 
             // Fetch geolocation and update text
