@@ -27,17 +27,19 @@
             z-index: -1;
         }
 
-        .content {
-            position: relative;
-            z-index: 1;
+        .text-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
-            color: white;
+            z-index: 1;
             text-align: center;
-            overflow: visible; /* Allow content overflow */
-            opacity: 1; /* Ensuring full opacity for content */
         }
 
         .circle-container {
@@ -147,7 +149,7 @@
         .transparent-button {
             display: inline-flex;
             align-items: center;
-            padding: 10px 90px;
+            padding: 10px 30px; /* Adjusted padding for better fit */
             border: 2px solid white;
             background-color: transparent;
             color: white;
@@ -160,6 +162,7 @@
             transition: background-color 0.3s, color 0.3s;
             text-shadow: 0 0 5px pink, 0 0 10px pink, 0 0 15px pink, 0 0 20px pink, 0 0 25px pink, 0 0 30px pink;
             box-shadow: 0 0 10px pink;
+            position: relative;
         }
 
         .button-icon {
@@ -277,16 +280,31 @@
                 <div class="timer-box" id="seconds"></div>
             </div>
             <!-- Date display -->
-            <div class="date-display" id="date"></div>
+            <div class="date-display" id="date"><b>70% off</b> until today,</div>
         </div>
     </div>
     <script>
         window.onload = function() {
-            // Initialize countdown timer
-            let endTime = new Date(Date.now() + 1 * 60 * 60 * 1000 + 30 * 60 * 1000); // 1 hour 30 minutes from now
+            // Set timer duration (2 hours for demo purposes, adjust as needed)
+            const TIMER_DURATION = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+
+            // Function to get the end time from local storage or calculate a new one
+            function getEndTime() {
+                const savedEndTime = localStorage.getItem('endTime');
+                const now = new Date().getTime();
+                if (savedEndTime && (now - savedEndTime < TIMER_DURATION)) {
+                    return parseInt(savedEndTime, 10);
+                } else {
+                    const newEndTime = now + TIMER_DURATION;
+                    localStorage.setItem('endTime', newEndTime);
+                    return newEndTime;
+                }
+            }
+
+            let endTime = getEndTime();
 
             function updateTimer() {
-                const now = new Date();
+                const now = new Date().getTime();
                 const timeRemaining = endTime - now;
 
                 if (timeRemaining <= 0) {
@@ -308,18 +326,10 @@
             setInterval(updateTimer, 1000);
             updateTimer(); // Initialize immediately
 
-            // Fetch date and update text
-            fetch('https://worldtimeapi.org/api/ip')
-                .then(response => response.json())
-                .then(data => {
-                    const dateTime = new Date(data.datetime);
-                    const dateStr = `${dateTime.toDateString()} ${dateTime.toLocaleTimeString()}`;
-                    document.getElementById('date').textContent = dateStr;
-                })
-                .catch(error => {
-                    document.getElementById('date').textContent = "Date information is unavailable.";
-                    console.error('Error fetching date data:', error);
-                });
+            // Display current date and time
+            const now = new Date();
+            const dateStr = `70% off until today, ${now.toDateString()} ${now.toLocaleTimeString()}`;
+            document.getElementById('date').textContent = dateStr;
         };
     </script>
 </body>
