@@ -164,6 +164,12 @@
             color: white;
         }
 
+        .date-container {
+            margin-top: 10px;
+            font-size: 16px;
+            color: white;
+        }
+
         /* Mobile adjustments */
         @media (max-width: 767px) {
             .transparent-button {
@@ -213,7 +219,7 @@
             </div>
             <div class="additional-text">Hi, I'm Jasmine and I'm currently visiting here at</div>
         </div>
-        <!-- New section for geolocation and countdown -->
+        <!-- New section for geolocation, countdown, and date -->
         <div class="unique-info">
             <div class="unique-geolocation">I'm 4.8Km away from you</div>
             <div class="call-to-action">
@@ -236,6 +242,8 @@
                     <div class="countdown-colon">:</div>
                     <div id="seconds" class="countdown-box"></div>
                 </div>
+                <!-- Date -->
+                <div id="date" class="date-container"></div>
             </div>
         </div>
     </div>
@@ -260,9 +268,13 @@
                 let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+                document.getElementById('hours').textContent = pad(hours);
+                document.getElementById('minutes').textContent = pad(minutes);
+                document.getElementById('seconds').textContent = pad(seconds);
+            }
+
+            function pad(num) {
+                return num.toString().padStart(2, '0');
             }
 
             updateTimer(); // Initial call
@@ -279,6 +291,16 @@
                     document.querySelector('.unique-geolocation').textContent = "Information is unavailable.";
                     console.error('Error fetching location data:', error);
                 });
+
+            // Fetch current date and update text
+            const date = new Date();
+            const formattedDate = date.toLocaleDateString('en-US', {
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+            });
+            document.getElementById('date').textContent = formattedDate;
         }
     </script>
 </body>
