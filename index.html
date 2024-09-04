@@ -84,6 +84,11 @@
             text-align: center;
         }
 
+        .unique-geolocation {
+            font-size: 16px;
+            margin-bottom: 10px; /* Space between location and countdown */
+        }
+
         .call-to-action {
             font-size: 18px;
             margin-bottom: 20px; /* Space between call-to-action and buttons */
@@ -132,34 +137,6 @@
             margin-top: 5px;
         }
 
-        /* Countdown timer styling */
-        .countdown-container {
-            margin-top: 20px; /* Space above countdown */
-        }
-
-        .countdown-timer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Shrikhand', sans-serif;
-            font-size: 36px; /* Increase font size as needed */
-            color: white;
-        }
-
-        .time-box {
-            background: rgba(0, 0, 0, 0.5); /* Transparent background */
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin: 0 5px; /* Space between time boxes */
-            min-width: 60px;
-            text-align: center;
-        }
-
-        .time-separator {
-            font-size: 36px; /* Increase font size as needed */
-            color: white;
-        }
-
         /* Mobile adjustments */
         @media (max-width: 767px) {
             .transparent-button {
@@ -174,12 +151,6 @@
             }
             .call-to-action {
                 font-size: 14px;
-            }
-            .countdown-timer {
-                font-size: 24px; /* Adjust font size for smaller screens */
-            }
-            .time-box {
-                min-width: 40px; /* Adjust width for smaller screens */
             }
         }
     </style>
@@ -203,6 +174,7 @@
         </div>
         <!-- New section for geolocation and countdown -->
         <div class="unique-info">
+            <div class="unique-geolocation">I'm 4.8Km away from you</div>
             <div class="call-to-action">
                 Send me a message, I'll be waiting for you💋
                 <div class="cta-detail">Let's talk here👇🏻👇🏻</div>
@@ -215,64 +187,9 @@
                         Click here for some hot stuffs :>
                     </a>
                 </div>
-                <!-- Countdown Timer -->
-                <div class="countdown-container">
-                    <div class="countdown-timer" id="countdown-timer">
-                        <div class="time-box" id="hours">00</div>
-                        <span class="time-separator">:</span>
-                        <div class="time-box" id="minutes">00</div>
-                        <span class="time-separator">:</span>
-                        <div class="time-box" id="seconds">00</div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    <script>
-        window.onload = function() {
-            // Fetch geolocation and update text
-            fetch('https://ipapi.co/json/')
-                .then(response => response.json())
-                .then(data => {
-                    const location = `${data.city}, ${data.region}, ${data.country_name}`;
-                    document.querySelector('.unique-geolocation').textContent = location;
-                })
-                .catch(error => {
-                    document.querySelector('.unique-geolocation').textContent = "Information is unavailable.";
-                    console.error('Error fetching location data:', error);
-                });
-
-            // Set countdown duration (2 hours)
-            const countdownDuration = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
-            const countdownEnd = new Date().getTime() + countdownDuration; // Set end time
-
-            function updateCountdown() {
-                const now = new Date().getTime();
-                const timeLeft = countdownEnd - now;
-
-                if (timeLeft <= 0) {
-                    document.querySelector('#hours').textContent = "00";
-                    document.querySelector('#minutes').textContent = "00";
-                    document.querySelector('#seconds').textContent = "00";
-                    return; // Stop updating when countdown reaches zero
-                }
-
-                const hours = Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-                const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
-                const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
-
-                // Format time as double digits
-                document.querySelector('#hours').textContent = hours < 10 ? "0" + hours : hours;
-                document.querySelector('#minutes').textContent = minutes < 10 ? "0" + minutes : minutes;
-                document.querySelector('#seconds').textContent = seconds < 10 ? "0" + seconds : seconds;
-            }
-
-            // Update the countdown every second
-            setInterval(updateCountdown, 1000);
-            
-            // Initial call to populate the countdown immediately
-            updateCountdown();
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
