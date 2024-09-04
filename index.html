@@ -140,11 +140,26 @@
         .countdown-box {
             font-size: 36px; /* Slightly smaller font size */
             color: white;
-            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
             padding: 20px;
             border-radius: 10px;
             display: inline-block; /* Makes the box fit around the text */
             margin-top: 20px; /* Space above countdown box */
+            text-align: center;
+        }
+
+        .countdown-box span {
+            display: inline-block;
+            min-width: 60px;
+        }
+
+        .countdown-box .label {
+            font-size: 16px;
+            display: block;
+        }
+
+        .countdown-box .time {
+            font-size: 36px;
         }
 
         /* Mobile adjustments */
@@ -168,6 +183,12 @@
             .countdown-box {
                 font-size: 24px; /* Smaller font size for mobile */
                 padding: 15px; /* Reduced padding */
+            }
+            .countdown-box .label {
+                font-size: 14px;
+            }
+            .countdown-box .time {
+                font-size: 24px;
             }
         }
     </style>
@@ -207,7 +228,12 @@
             </div>
             <!-- Countdown Timer Box -->
             <div class="countdown-box">
-                <span id="hours">01</span>:<span id="minutes">30</span>:<span id="seconds">00</span>
+                <div class="label">Hours</div>
+                <div class="time" id="hours">01</div>
+                <div class="label">Minutes</div>
+                <div class="time" id="minutes">30</div>
+                <div class="label">Seconds</div>
+                <div class="time" id="seconds">00</div>
             </div>
         </div>
     </div>
@@ -248,8 +274,8 @@
                 document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
             }
 
-            // Update the timer every 1 second
-            let timerInterval = setInterval(updateTimer, 1000);
+            updateTimer(); // Initial call to display timer immediately
+            const timerInterval = setInterval(updateTimer, 1000);
         }
     </script>
 </body>
