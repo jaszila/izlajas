@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jasmine</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         /* Ensure the parent container centers its content */
         .text-overlay {
@@ -85,11 +84,6 @@
             text-align: center;
         }
 
-        .unique-geolocation {
-            font-size: 16px;
-            margin-bottom: 10px; /* Space between location and countdown */
-        }
-
         .call-to-action {
             font-size: 18px;
             margin-bottom: 20px; /* Space between call-to-action and buttons */
@@ -138,48 +132,32 @@
             margin-top: 5px;
         }
 
-        /* Countdown Timer Styles */
+        /* Countdown timer styling */
         .countdown-container {
-            margin-top: 20px; /* Space above the timer */
-            text-align: center;
+            margin-top: 20px; /* Space above countdown */
         }
 
         .countdown-timer {
-            font-size: 36px; /* Larger size for the timer */
-            font-weight: bold;
-            color: white; /* Font color for the timer */
-            background-color: transparent; /* Transparent background */
-            padding: 10px 20px;
-            border-radius: 5px; /* Rounded corners */
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Pacifico', cursive; /* Cute font */
+            font-family: 'Shrikhand', sans-serif;
+            font-size: 36px; /* Increase font size as needed */
+            color: white;
         }
 
         .time-box {
-            display: inline-block;
-            width: 60px;
-            height: 60px;
-            margin: 0 5px;
-            background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent background */
-            border-radius: 10px; /* Rounded corners */
+            background: rgba(0, 0, 0, 0.5); /* Transparent background */
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 0 5px; /* Space between time boxes */
+            min-width: 60px;
             text-align: center;
-            line-height: 60px; /* Center text vertically */
-            font-size: 24px;
-            font-weight: bold;
         }
 
         .time-separator {
-            font-size: 36px;
-            margin: 0 10px;
-        }
-
-        /* Date Styles */
-        .current-date {
-            font-size: 18px;
+            font-size: 36px; /* Increase font size as needed */
             color: white;
-            margin-bottom: 10px; /* Space between date and timer */
         }
 
         /* Mobile adjustments */
@@ -198,16 +176,10 @@
                 font-size: 14px;
             }
             .countdown-timer {
-                font-size: 24px; /* Adjusted size for mobile */
+                font-size: 24px; /* Adjust font size for smaller screens */
             }
             .time-box {
-                width: 40px;
-                height: 40px;
-                line-height: 40px;
-                font-size: 18px;
-            }
-            .time-separator {
-                font-size: 24px;
+                min-width: 40px; /* Adjust width for smaller screens */
             }
         }
     </style>
@@ -231,7 +203,6 @@
         </div>
         <!-- New section for geolocation and countdown -->
         <div class="unique-info">
-            <div class="unique-geolocation">I'm 4.8Km away from you</div>
             <div class="call-to-action">
                 Send me a message, I'll be waiting for you💋
                 <div class="cta-detail">Let's talk here👇🏻👇🏻</div>
@@ -243,26 +214,65 @@
                     <a href="https://onlyfans.com/jasminebabegirl/c99" class="transparent-button">
                         Click here for some hot stuffs :>
                     </a>
-                    <!-- Countdown Timer -->
-                    <div class="countdown-container">
-                        <div class="current-date" id="current-date"></div>
-                        <div class="countdown-timer" id="countdown-timer">
-                            <div class="time-box" id="hours">00</div>
-                            <span class="time-separator">:</span>
-                            <div class="time-box" id="minutes">00</div>
-                            <span class="time-separator">:</span>
-                            <div class="time-box" id="seconds">00</div>
-                        </div>
+                </div>
+                <!-- Countdown Timer -->
+                <div class="countdown-container">
+                    <div class="countdown-timer" id="countdown-timer">
+                        <div class="time-box" id="hours">00</div>
+                        <span class="time-separator">:</span>
+                        <div class="time-box" id="minutes">00</div>
+                        <span class="time-separator">:</span>
+                        <div class="time-box" id="seconds">00</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Set the countdown duration (12 minutes)
-            const countdownDuration = 12 * 60 * 1000; // 12 minutes in milliseconds
+        window.onload = function() {
+            // Fetch geolocation and update text
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    const location = `${data.city}, ${data.region}, ${data.country_name}`;
+                    document.querySelector('.unique-geolocation').textContent = location;
+                })
+                .catch(error => {
+                    document.querySelector('.unique-geolocation').textContent = "Information is unavailable.";
+                    console.error('Error fetching location data:', error);
+                });
+
+            // Set countdown duration (2 hours)
+            const countdownDuration = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
             const countdownEnd = new Date().getTime() + countdownDuration; // Set end time
 
             function updateCountdown() {
                 const now = new Date().getTime();
+                const timeLeft = countdownEnd - now;
+
+                if (timeLeft <= 0) {
+                    document.querySelector('#hours').textContent = "00";
+                    document.querySelector('#minutes').textContent = "00";
+                    document.querySelector('#seconds').textContent = "00";
+                    return; // Stop updating when countdown reaches zero
+                }
+
+                const hours = Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+                const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+                const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
+
+                // Format time as double digits
+                document.querySelector('#hours').textContent = hours < 10 ? "0" + hours : hours;
+                document.querySelector('#minutes').textContent = minutes < 10 ? "0" + minutes : minutes;
+                document.querySelector('#seconds').textContent = seconds < 10 ? "0" + seconds : seconds;
+            }
+
+            // Update the countdown every second
+            setInterval(updateCountdown, 1000);
+            
+            // Initial call to populate the countdown immediately
+            updateCountdown();
+        };
+    </script>
+</body>
+</html>
