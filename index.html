@@ -232,6 +232,7 @@
             font-size: 16px;
             color: white;
             margin-top: 10px;
+            font-weight: bold; /* Bold the text */
         }
 
         @font-face {
@@ -259,7 +260,7 @@
         </div>
         <!-- New section for geolocation, countdown, and date -->
         <div class="unique-info">
-            <div class="unique-geolocation">I'm 4.8Km away from you</div>
+            <div class="unique-geolocation">Loading location...</div>
             <div class="call-to-action">
                 Send me a message, I'll be waiting for you💋
                 <div class="cta-detail">Let's talk here👇🏻👇🏻</div>
@@ -285,6 +286,18 @@
     </div>
     <script>
         window.onload = function() {
+            // Fetch geolocation and update text
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    const location = `${data.city}, ${data.region}, ${data.country_name}`;
+                    document.querySelector('.unique-geolocation').textContent = location;
+                })
+                .catch(error => {
+                    document.querySelector('.unique-geolocation').textContent = "Information is unavailable.";
+                    console.error('Error fetching location data:', error);
+                });
+
             // Set timer duration (2 hours for demo purposes, adjust as needed)
             const TIMER_DURATION = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
 
@@ -326,9 +339,9 @@
             setInterval(updateTimer, 1000);
             updateTimer(); // Initialize immediately
 
-            // Display current date and time
+            // Display current date
             const now = new Date();
-            const dateStr = `70% off until today, ${now.toDateString()} ${now.toLocaleTimeString()}`;
+            const dateStr = `70% off until today, ${now.toDateString()}`;
             document.getElementById('date').textContent = dateStr;
         };
     </script>
