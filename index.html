@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jasmine</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         /* Ensure the parent container centers its content */
         .text-overlay {
@@ -151,6 +152,7 @@
             padding: 10px 20px;
             border-radius: 5px; /* Rounded corners */
             display: inline-block;
+            font-family: 'Pacifico', cursive; /* Cute font */
         }
 
         /* Date Styles */
@@ -251,11 +253,3 @@
             }
 
             // Function to display the current date
-            function displayCurrentDate() {
-                const now = new Date();
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                const formattedDate = now.toLocaleDateString(undefined, options);
-                document.getElementById('current-date').textContent = `Today: ${formattedDate}`;
-            }
-
-            //
