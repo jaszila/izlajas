@@ -137,29 +137,25 @@
             margin-top: 5px;
         }
 
+        /* Timer styling */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between boxes */
+            margin-top: 20px;
+        }
+
         .countdown-box {
-            font-size: 36px; /* Slightly smaller font size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2); /* Transparent white background */
+            border-radius: 10px; /* Rounded corners */
             color: white;
-            background: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
-            padding: 20px;
-            border-radius: 10px;
-            display: inline-block; /* Makes the box fit around the text */
-            margin-top: 20px; /* Space above countdown box */
-            text-align: center;
-        }
-
-        .countdown-box span {
-            display: inline-block;
-            min-width: 60px;
-        }
-
-        .countdown-box .label {
-            font-size: 16px;
-            display: block;
-        }
-
-        .countdown-box .time {
-            font-size: 36px;
+            font-size: 24px;
+            font-weight: bold;
         }
 
         /* Mobile adjustments */
@@ -181,15 +177,16 @@
                 font-size: 14px;
             }
             .countdown-box {
-                font-size: 24px; /* Smaller font size for mobile */
-                padding: 15px; /* Reduced padding */
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
             }
-            .countdown-box .label {
-                font-size: 14px;
-            }
-            .countdown-box .time {
-                font-size: 24px;
-            }
+        }
+
+        /* Load and apply the custom font */
+        @font-face {
+            font-family: 'Shrikhand';
+            src: url('fonts/Shrikhand-Regular.ttf') format('truetype');
         }
     </style>
 </head>
@@ -225,43 +222,31 @@
                         Click here for some hot stuffs :>
                     </a>
                 </div>
-            </div>
-            <!-- Countdown Timer Box -->
-            <div class="countdown-box">
-                <div class="label">Hours</div>
-                <div class="time" id="hours">01</div>
-                <div class="label">Minutes</div>
-                <div class="time" id="minutes">30</div>
-                <div class="label">Seconds</div>
-                <div class="time" id="seconds">00</div>
+                <!-- Countdown Timer -->
+                <div class="countdown-container">
+                    <div id="hours" class="countdown-box"></div>
+                    <div class="countdown-box">:</div>
+                    <div id="minutes" class="countdown-box"></div>
+                    <div class="countdown-box">:</div>
+                    <div id="seconds" class="countdown-box"></div>
+                </div>
             </div>
         </div>
     </div>
     <script>
         window.onload = function() {
-            // Fetch geolocation and update text
-            fetch('https://ipapi.co/json/')
-                .then(response => response.json())
-                .then(data => {
-                    const location = `${data.city}, ${data.region}, ${data.country_name}`;
-                    document.querySelector('.unique-geolocation').textContent = location;
-                })
-                .catch(error => {
-                    document.querySelector('.unique-geolocation').textContent = "Information is unavailable.";
-                    console.error('Error fetching location data:', error);
-                });
-
-            // Countdown Timer Logic
-            const countdownElement = document.querySelector('.countdown-box');
-            let endTime = new Date().getTime() + 1 * 60 * 60 * 1000 + 30 * 60 * 1000; // 1 hour 30 minutes from now
+            // Countdown Timer
+            const countDownDate = new Date().getTime() + 1 * 60 * 60 * 1000; // Set to 1 hour from now
 
             function updateTimer() {
-                let now = new Date().getTime();
-                let distance = endTime - now;
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
 
                 if (distance < 0) {
                     clearInterval(timerInterval);
-                    countdownElement.innerHTML = "EXPIRED";
+                    document.getElementById('hours').textContent = "00";
+                    document.getElementById('minutes').textContent = "00";
+                    document.getElementById('seconds').textContent = "00";
                     return;
                 }
 
@@ -276,6 +261,18 @@
 
             updateTimer(); // Initial call to display timer immediately
             const timerInterval = setInterval(updateTimer, 1000);
+
+            // Fetch geolocation and update text
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    const location = `${data.city}, ${data.region}, ${data.country_name}`;
+                    document.querySelector('.unique-geolocation').textContent = location;
+                })
+                .catch(error => {
+                    document.querySelector('.unique-geolocation').textContent = "Information is unavailable.";
+                    console.error('Error fetching location data:', error);
+                });
         }
     </script>
 </body>
