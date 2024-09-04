@@ -137,6 +137,22 @@
             margin-top: 5px;
         }
 
+        /* Countdown Timer Styles */
+        .countdown-container {
+            margin-top: 20px; /* Space above the timer */
+            text-align: center;
+        }
+
+        .countdown-timer {
+            font-size: 16px; /* Adjust size as needed */
+            font-weight: bold;
+            color: #ff0000; /* Color for the timer */
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            padding: 5px 10px;
+            border-radius: 5px; /* Rounded corners */
+            display: inline-block;
+        }
+
         /* Mobile adjustments */
         @media (max-width: 767px) {
             .transparent-button {
@@ -150,6 +166,9 @@
                 width: 20px;
             }
             .call-to-action {
+                font-size: 14px;
+            }
+            .countdown-timer {
                 font-size: 14px;
             }
         }
@@ -186,10 +205,46 @@
                     <a href="https://onlyfans.com/jasminebabegirl/c99" class="transparent-button">
                         Click here for some hot stuffs :>
                     </a>
+                    <!-- Countdown Timer -->
+                    <div class="countdown-container">
+                        <div class="countdown-timer" id="countdown-timer">12:00</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const countdownDuration = 12 * 60 * 1000; // 12 minutes in milliseconds
+            const countdownEnd = new Date().getTime() + countdownDuration; // Set end time
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const timeLeft = countdownEnd - now;
+
+                // Calculate minutes and seconds
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                // Format time
+                const formattedMinutes = minutes.toString().padStart(2, '0');
+                const formattedSeconds = seconds.toString().padStart(2, '0');
+
+                // Display the timer
+                document.getElementById('countdown-timer').textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+                // If the countdown is over, display a message
+                if (timeLeft < 0) {
+                    document.getElementById('countdown-timer').textContent = "EXPIRED";
+                }
+            }
+
+            // Update the countdown every second
+            setInterval(updateCountdown, 1000);
+            
+            // Initial call to display the timer immediately
+            updateCountdown();
+        });
+    </script>
 </body>
 </html>
