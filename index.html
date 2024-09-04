@@ -146,17 +146,11 @@
         .countdown-timer {
             font-size: 30px; /* Larger size */
             font-weight: bold;
-            color: #ff0000; /* Color for the timer */
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            color: white; /* Font color for the timer */
+            background-color: transparent; /* Transparent background */
             padding: 10px 20px;
             border-radius: 5px; /* Rounded corners */
             display: inline-block;
-        }
-
-        .countdown-label {
-            font-size: 18px; /* Adjust size as needed */
-            color: white; /* Color for the label */
-            margin-bottom: 5px; /* Space between label and timer */
         }
 
         /* Mobile adjustments */
@@ -213,8 +207,7 @@
                     </a>
                     <!-- Countdown Timer -->
                     <div class="countdown-container">
-                        <div class="countdown-label">00 Hour</div>
-                        <div class="countdown-timer" id="countdown-timer">00:00</div>
+                        <div class="countdown-timer" id="countdown-timer">12:00</div>
                     </div>
                 </div>
             </div>
@@ -222,25 +215,23 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const countdownDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+            const countdownDuration = 12 * 60 * 1000; // 12 minutes in milliseconds
             const countdownEnd = new Date().getTime() + countdownDuration; // Set end time
 
             function updateCountdown() {
                 const now = new Date().getTime();
                 const timeLeft = countdownEnd - now;
 
-                // Calculate hours and seconds
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                // Calculate minutes and seconds
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
                 // Format time with leading zeros
-                const formattedHours = hours.toString().padStart(2, '0');
                 const formattedMinutes = minutes.toString().padStart(2, '0');
                 const formattedSeconds = seconds.toString().padStart(2, '0');
 
                 // Display the timer
-                document.getElementById('countdown-timer').textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+                document.getElementById('countdown-timer').textContent = `${formattedMinutes}:${formattedSeconds}`;
 
                 // If the countdown is over, display a message
                 if (timeLeft < 0) {
