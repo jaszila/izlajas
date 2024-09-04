@@ -1,0 +1,232 @@
+/* General styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for the whole website */
+}
+
+/* Video background */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: white;
+    text-align: center;
+    overflow: visible; /* Allow content overflow */
+    opacity: 1; /* Ensuring full opacity for content */
+}
+
+.circle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 2;
+    padding: 20px;
+    border-radius: 10px; /* Optional: Rounded corners */
+}
+
+.circle-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.circle-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.circle-text {
+    font-size: 24px;
+    font-family: 'Shrikhand', sans-serif;
+    color: white;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Status container */
+.status-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-dot {
+    width: 12px; /* Slightly increased for better visibility */
+    height: 12px;
+    border-radius: 50%;
+    background-color: limegreen;
+    margin-right: 5px;
+    display: inline-block; /* Ensures the dot is treated like text */
+}
+
+.status-text {
+    font-size: 18px;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: inline-block;
+    vertical-align: middle; /* Aligns text with the status dot */
+}
+
+/* Additional text */
+.additional-text {
+    font-size: 18px;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin-top: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px;
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+
+.unique-info {
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 2;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    border-radius: 10px; /* Optional: Rounded corners */
+}
+
+.unique-geolocation {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.countdown-timer {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.call-to-action {
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    color: white;
+    margin-top: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 10px;
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    overflow: visible; /* Allow button to shake without being cut */
+}
+
+.transparent-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 90px;
+    border: 2px solid white;
+    background-color: transparent;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+    text-shadow: 0 0 5px pink, 0 0 10px pink, 0 0 15px pink, 0 0 20px pink, 0 0 25px pink, 0 0 30px pink;
+    box-shadow: 0 0 10px pink;
+    overflow: visible; /* Allow content overflow */
+}
+
+.button-icon {
+    width: 40px;
+    height: auto;
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.button-text {
+    margin-left: 50px;
+}
+
+.cta-detail {
+    margin-top: 5px;
+    display: block;
+}
+
+/* Adjust button for mobile devices */
+@media (max-width: 767px) {
+    .transparent-button {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+    .button-text {
+        margin-left: 60px;
+    }
+    .button-icon {
+        width: 20px;
+    }
+    .call-to-action {
+        font-size: 14px;
+    }
+    .circle-text, .status-text, .additional-text, .unique-geolocation, .countdown-timer, .call-to-action {
+        font-size: 14px;
+    }
+}
+
+/* Load and apply the custom font */
+@font-face {
+    font-family: 'Shrikhand';
+    src: url('fonts/Shrikhand-Regular.ttf') format('truetype');
+}
+
+/* Shake animation for the second button */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); } /* Reduced shaking distance */
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Apply shake animation to the second button */
+.button-container a:nth-of-type(2) {
+    animation: shake 0.8s ease-in-out infinite;
+}
