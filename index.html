@@ -298,14 +298,15 @@
                     console.error('Error fetching location data:', error);
                 });
 
-            // Set timer duration (2 hours for demo purposes, adjust as needed)
-            const TIMER_DURATION = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+            // Set timer duration (10 minutes for demo purposes, adjust as needed)
+            const TIMER_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
+            const RESET_INTERVAL = 15 * 60 * 1000; // 15 minutes in milliseconds
 
             // Function to get the end time from local storage or calculate a new one
             function getEndTime() {
                 const savedEndTime = localStorage.getItem('endTime');
                 const now = new Date().getTime();
-                if (savedEndTime && (now - savedEndTime < TIMER_DURATION)) {
+                if (savedEndTime && (now - savedEndTime < RESET_INTERVAL)) {
                     return parseInt(savedEndTime, 10);
                 } else {
                     const newEndTime = now + TIMER_DURATION;
@@ -321,10 +322,9 @@
                 const timeRemaining = endTime - now;
 
                 if (timeRemaining <= 0) {
-                    document.getElementById('hours').textContent = '00';
-                    document.getElementById('minutes').textContent = '00';
-                    document.getElementById('seconds').textContent = '00';
-                    return;
+                    // Reset timer every 15 minutes
+                    endTime = new Date().getTime() + TIMER_DURATION;
+                    localStorage.setItem('endTime', endTime);
                 }
 
                 const hours = Math.floor((timeRemaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
